@@ -13,14 +13,17 @@ from typing import Optional
 # ─────────────────────────────────────────────
 # Configuration
 # ─────────────────────────────────────────────
-# Read backend URL from Streamlit secrets (deployed) or environment variable (local)
-# In Streamlit Cloud: set FRONTEND_BACKEND_URL in app Settings → Secrets
-# Locally: set in .env or just uses localhost default
-BACKEND_URL = "http://127.0.0.1:8000"
+try:
+    # This automatically grabs your Render link from Streamlit Secrets
+    BACKEND_URL = st.secrets["FRONTEND_BACKEND_URL"]
+except Exception:
+    # If running locally, it defaults to the Render link too so you don't have to switch back and forth
+    BACKEND_URL = "https://studymate-ai-0zvn.onrender.com"
+
 # Strip trailing slash to avoid double-slash URLs
 BACKEND_URL = BACKEND_URL.rstrip("/")
 
-BACKEND_URL ="https://studymate-ai-0zvn.onrender.com/"
+
 
 st.set_page_config(
     page_title="StudyMate AI",
@@ -373,7 +376,7 @@ def api_post(endpoint: str, data: dict = None, files: dict = None, timeout: int 
     except requests.ConnectionError:
         return {
             "success": False,
-            "error": "❌ Cannot connect to backend. Make sure it's running:\n`python -m backend.main`",
+            "error": f"❌ Cannot connect to backend at {BACKEND_URL}",
         }
     except requests.Timeout:
         return {"success": False, "error": "Request timed out. Large files may take longer."}
@@ -382,19 +385,18 @@ def api_post(endpoint: str, data: dict = None, files: dict = None, timeout: int 
 
 
 def api_get(endpoint: str, params: dict = None, timeout: int = 30) -> dict:
+    """GET from backend."""
     try:
         resp = requests.get(f"{BACKEND_URL}{endpoint}", params=params or {}, timeout=timeout)
         if resp.status_code == 200:
             return {"success": True, "data": resp.json()}
-        else:
-            return {"success": False, "error": resp.text}
-    except Exception as e:
-        return {"success": False, "error": str(e)}
+        
         try:
             detail = resp.json().get("detail", f"HTTP {resp.status_code}")
         except Exception:
             detail = f"HTTP {resp.status_code}"
         return {"success": False, "error": detail}
+        
     except requests.ConnectionError:
         return {"success": False, "error": "Backend offline"}
     except Exception as e:
