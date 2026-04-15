@@ -1,0 +1,50 @@
+# ============================================================
+# .gitignore — Files that must NOT go to GitHub
+# ============================================================
+
+# --- Environment (contains secret keys!) ---
+.env
+*.env.local
+
+# --- Python ---
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+venv/
+env/
+.venv/
+*.egg-info/
+dist/
+build/
+
+# --- Data files (regenerated on server) ---
+data/studymate.db
+data/uploads/
+data/logs/
+
+# --- FAISS index (too large for GitHub, rebuilt on server) ---
+vector_store_data/
+
+# --- Audio cache ---
+audio_outputs/
+
+# --- IDE ---
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+
+# --- Test artifacts ---
+.pytest_cache/
+.coverage
+htmlcov/
+
+# --- Logs ---
+*.log
+
+# Streamlit secrets (contains backend URL)
+.streamlit/secrets.toml

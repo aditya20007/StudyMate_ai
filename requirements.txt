@@ -1,0 +1,53 @@
+# ============================================================
+# StudyMate AI — Requirements (Render Free Tier Optimized)
+# torch CPU-only must be first to prevent GPU version install
+# ============================================================
+
+# --- PyTorch CPU-only (MUST BE FIRST — prevents 2GB GPU version) ---
+--extra-index-url https://download.pytorch.org/whl/cpu
+torch
+
+# --- Web Framework ---
+fastapi
+uvicorn[standard]
+python-multipart
+
+# --- Database ---
+sqlalchemy
+aiosqlite
+
+# --- AI / LLM ---
+openai
+
+# --- Embeddings ---
+sentence-transformers
+
+# --- Vector Store ---
+faiss-cpu
+numpy
+
+# --- PDF Processing ---
+pdfplumber
+PyMuPDF
+
+# --- YouTube ---
+youtube-transcript-api
+yt-dlp
+
+# --- Speech / Audio ---
+gTTS
+
+# --- Text Processing ---
+tiktoken
+
+# --- Utilities ---
+python-dotenv
+pydantic
+pydantic-settings
+httpx
+aiofiles
+requests
+tenacity
+loguru
+rich
+tqdm
