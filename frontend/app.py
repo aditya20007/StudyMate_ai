@@ -382,11 +382,14 @@ def api_post(endpoint: str, data: dict = None, files: dict = None, timeout: int 
 
 
 def api_get(endpoint: str, params: dict = None, timeout: int = 30) -> dict:
-    """GET from backend."""
     try:
         resp = requests.get(f"{BACKEND_URL}{endpoint}", params=params or {}, timeout=timeout)
         if resp.status_code == 200:
             return {"success": True, "data": resp.json()}
+        else:
+            return {"success": False, "error": resp.text}
+    except Exception as e:
+        return {"success": False, "error": str(e)}
         try:
             detail = resp.json().get("detail", f"HTTP {resp.status_code}")
         except Exception:
