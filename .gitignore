@@ -48,3 +48,4 @@ htmlcov/
 
 # Streamlit secrets (contains backend URL)
 .streamlit/secrets.toml
+.env
