@@ -20,6 +20,8 @@ BACKEND_URL = "http://127.0.0.1:8000"
 # Strip trailing slash to avoid double-slash URLs
 BACKEND_URL = BACKEND_URL.rstrip("/")
 
+BACKEND_URL ="https://studymate-ai-0zvn.onrender.com/"
+
 st.set_page_config(
     page_title="StudyMate AI",
     page_icon="🎓",
