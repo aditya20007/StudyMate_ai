@@ -41,9 +41,7 @@ async def lifespan(app: FastAPI):
     yield
     logger.info("StudyMate AI shutting down...")
 
-@app.get("/health")
-def health():
-    return {"status": "ok"}
+
 # ──────────────────────────────────────────────
 # App
 # ──────────────────────────────────────────────
