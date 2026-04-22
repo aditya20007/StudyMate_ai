@@ -1,10 +1,14 @@
 # ============================================================
 # StudyMate AI — Requirements (Render Free Tier)
-# NO torch, NO sentence-transformers — uses free APIs instead:
-#   - Groq API for LLM (summarize, Q&A, quiz)
-#   - Google Generative AI for embeddings (free, 768-dim)
-# Total RAM on Render: ~170MB (well under 512MB limit)
+#
+# IMPORTANT: torch CPU-only line MUST come first.
+# Without it, pip installs the 1.5GB GPU version of torch
+# which causes build timeout on Render free tier.
 # ============================================================
+
+# --- PyTorch CPU-only (MUST BE FIRST) ---
+--extra-index-url https://download.pytorch.org/whl/cpu
+torch==2.1.0+cpu
 
 # --- Web Framework ---
 fastapi
@@ -15,11 +19,11 @@ python-multipart
 sqlalchemy
 aiosqlite
 
-# --- LLM: Groq (chat completions) ---
+# --- LLM: Groq (free, fast) ---
 openai
 
-# --- Embeddings: Google Generative AI (free, no local model) ---
-google-genai>=1.0.0
+# --- Embeddings: smallest sentence-transformer model (17MB) ---
+sentence-transformers==2.7.0
 
 # --- Vector Store ---
 faiss-cpu

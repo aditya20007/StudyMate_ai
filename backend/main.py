@@ -18,33 +18,27 @@ from backend.routes.upload import router as upload_router
 from backend.routes.query import router as query_router
 
 
-# ──────────────────────────────────────────────
-# Create dirs BEFORE app object is built
-# StaticFiles mount crashes if directory missing
-# ──────────────────────────────────────────────
-
+# ── Create dirs before app builds (StaticFiles needs them) ──
 Path("./data/uploads").mkdir(parents=True, exist_ok=True)
 Path("./audio_outputs").mkdir(exist_ok=True)
 Path("./vector_store_data").mkdir(exist_ok=True)
 Path("./data/logs").mkdir(parents=True, exist_ok=True)
 
 
-# ──────────────────────────────────────────────
-# Lifespan
-# ──────────────────────────────────────────────
+# ── Lifespan ─────────────────────────────────────────────────
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     logger.info("StudyMate AI — Backend Starting")
     init_db()
+    # ✅ DO NOT pre-load embedding model here
+    # It loads lazily on first request — prevents startup OOM on Render
     logger.info("StudyMate AI is ready!")
     yield
     logger.info("StudyMate AI shutting down...")
 
 
-# ──────────────────────────────────────────────
-# App
-# ──────────────────────────────────────────────
+# ── App ──────────────────────────────────────────────────────
 
 app = FastAPI(
     title="StudyMate AI",
@@ -55,11 +49,6 @@ app = FastAPI(
     lifespan=lifespan,
 )
 
-
-# ──────────────────────────────────────────────
-# CORS — allow Streamlit Cloud to call this API
-# ──────────────────────────────────────────────
-
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -68,34 +57,17 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-
-# ──────────────────────────────────────────────
-# Static Files (audio outputs)
-# ──────────────────────────────────────────────
-
 app.mount("/audio", StaticFiles(directory="./audio_outputs"), name="audio")
-
-
-# ──────────────────────────────────────────────
-# Routers
-# ──────────────────────────────────────────────
 
 app.include_router(upload_router)
 app.include_router(query_router)
 
 
-# ──────────────────────────────────────────────
-# Routes
-# ──────────────────────────────────────────────
+# ── Routes ───────────────────────────────────────────────────
 
 @app.get("/", tags=["Status"])
 async def root():
-    return {
-        "app": "StudyMate AI",
-        "version": "1.0.0",
-        "status": "running",
-        "docs": "/docs",
-    }
+    return {"app": "StudyMate AI", "version": "1.0.0", "status": "running"}
 
 
 @app.get("/health", tags=["Status"])
@@ -129,10 +101,6 @@ async def get_stats():
     return get_vector_store().get_stats()
 
 
-# ──────────────────────────────────────────────
-# Global Error Handler
-# ──────────────────────────────────────────────
-
 @app.exception_handler(Exception)
 async def global_exception_handler(request, exc):
     logger.error(f"Unhandled exception: {exc}")
@@ -142,17 +110,8 @@ async def global_exception_handler(request, exc):
     )
 
 
-# ──────────────────────────────────────────────
-# Entry point — reads PORT correctly on Render
-# ──────────────────────────────────────────────
-
 if __name__ == "__main__":
     import uvicorn
     port = int(os.environ.get("PORT", 10000))
-    uvicorn.run(
-        "backend.main:app",
-        host="0.0.0.0",
-        port=port,
-        reload=False,
-        log_level="info",
-    )
+    uvicorn.run("backend.main:app", host="0.0.0.0", port=port,
+                reload=False, log_level="info")
