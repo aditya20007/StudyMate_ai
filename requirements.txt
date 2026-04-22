@@ -1,11 +1,9 @@
 # ============================================================
-# StudyMate AI — Requirements (Render Free Tier Optimized)
-# torch CPU-only must be first to prevent GPU version install
+# StudyMate AI — Requirements (Render Free Tier, No Local ML)
+# 
+# sentence-transformers and torch REMOVED — uses Groq API instead.
+# This keeps total RAM under 512MB (Render free tier limit).
 # ============================================================
-
-# --- PyTorch CPU-only (MUST BE FIRST — prevents 2GB GPU version) ---
---extra-index-url https://download.pytorch.org/whl/cpu
-torch
 
 # --- Web Framework ---
 fastapi
@@ -16,13 +14,10 @@ python-multipart
 sqlalchemy
 aiosqlite
 
-# --- AI / LLM ---
+# --- AI / LLM + Embeddings (Groq — free API, no local model) ---
 openai
 
-# --- Embeddings ---
-sentence-transformers
-
-# --- Vector Store ---
+# --- Vector Store (CPU only, no GPU packages) ---
 faiss-cpu
 numpy
 
