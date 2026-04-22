@@ -8,6 +8,7 @@ EMBEDDING_DIM = 768
 _client = None
 
 
+
 def _get_client():
     global _client
     if _client is None:
