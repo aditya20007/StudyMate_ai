@@ -14,8 +14,12 @@ class Settings(BaseSettings):
     Locally: put them in .env file.
     """
 
-    # Groq (free LLM API)
+    # Groq (LLM — summarize, Q&A, quiz, study plan)
     groq_api_key: str = Field(default="gsk_placeholder", env="GROQ_API_KEY")
+
+    # Google (FREE embeddings — text-embedding-004)
+    # Get key at: https://aistudio.google.com/apikey
+    google_api_key: str = Field(default="google_placeholder", env="GOOGLE_API_KEY")
 
     # App
     app_env: str = Field(default="production", env="APP_ENV")
@@ -50,17 +54,14 @@ class Settings(BaseSettings):
     )
 
     class Config:
-        # Try to load .env if it exists locally — ignore if missing (Render has no .env)
         env_file = ".env"
         env_file_encoding = "utf-8"
         extra = "ignore"
 
     def ensure_directories(self):
-        """Create all required directories."""
         for d in ["./data", "./audio_outputs", "./vector_store_data", "./data/logs"]:
             Path(d).mkdir(parents=True, exist_ok=True)
 
 
-# Singleton
 settings = Settings()
 settings.ensure_directories()

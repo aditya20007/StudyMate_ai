@@ -1,8 +1,9 @@
 # ============================================================
-# StudyMate AI — Requirements (Render Free Tier, No Local ML)
-# 
-# sentence-transformers and torch REMOVED — uses Groq API instead.
-# This keeps total RAM under 512MB (Render free tier limit).
+# StudyMate AI — Requirements (Render Free Tier)
+# NO torch, NO sentence-transformers — uses free APIs instead:
+#   - Groq API for LLM (summarize, Q&A, quiz)
+#   - Google Generative AI for embeddings (free, 768-dim)
+# Total RAM on Render: ~170MB (well under 512MB limit)
 # ============================================================
 
 # --- Web Framework ---
@@ -14,10 +15,13 @@ python-multipart
 sqlalchemy
 aiosqlite
 
-# --- AI / LLM + Embeddings (Groq — free API, no local model) ---
+# --- LLM: Groq (chat completions) ---
 openai
 
-# --- Vector Store (CPU only, no GPU packages) ---
+# --- Embeddings: Google Generative AI (free, no local model) ---
+google-generativeai
+
+# --- Vector Store ---
 faiss-cpu
 numpy
 
