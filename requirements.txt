@@ -19,7 +19,7 @@ aiosqlite
 openai
 
 # --- Embeddings: Google Generative AI (free, no local model) ---
-google-generativeai
+google-genai>=1.0.0
 
 # --- Vector Store ---
 faiss-cpu
