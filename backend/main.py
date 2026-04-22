@@ -20,7 +20,7 @@ from backend.routes.query import router as query_router
 
 # ──────────────────────────────────────────────
 # Create dirs BEFORE app object is built
-# (StaticFiles mount fails if directory missing)
+# StaticFiles mount crashes if directory missing
 # ──────────────────────────────────────────────
 
 Path("./data/uploads").mkdir(parents=True, exist_ok=True)
@@ -57,7 +57,7 @@ app = FastAPI(
 
 
 # ──────────────────────────────────────────────
-# CORS
+# CORS — allow Streamlit Cloud to call this API
 # ──────────────────────────────────────────────
 
 app.add_middleware(
@@ -70,7 +70,7 @@ app.add_middleware(
 
 
 # ──────────────────────────────────────────────
-# Static Files (audio)
+# Static Files (audio outputs)
 # ──────────────────────────────────────────────
 
 app.mount("/audio", StaticFiles(directory="./audio_outputs"), name="audio")
@@ -100,7 +100,7 @@ async def root():
 
 @app.get("/health", tags=["Status"])
 async def health_check():
-    from rag.vector_store import get_vector_store   # ← remove "backend."
+    from rag.vector_store import get_vector_store
     from backend.database.session import get_session_local
     from sqlalchemy import text
 
@@ -130,7 +130,7 @@ async def get_stats():
 
 
 # ──────────────────────────────────────────────
-# Error Handler
+# Global Error Handler
 # ──────────────────────────────────────────────
 
 @app.exception_handler(Exception)
@@ -148,11 +148,11 @@ async def global_exception_handler(request, exc):
 
 if __name__ == "__main__":
     import uvicorn
-    port = int(os.environ.get("PORT", 8000))
+    port = int(os.environ.get("PORT", 10000))
     uvicorn.run(
         "backend.main:app",
         host="0.0.0.0",
         port=port,
-        reload=False,   # Never reload in production
+        reload=False,
         log_level="info",
     )
