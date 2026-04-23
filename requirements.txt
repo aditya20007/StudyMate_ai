@@ -7,7 +7,7 @@
 # ============================================================
 
 # --- PyTorch CPU-only (MUST BE FIRST) ---
-torch==2.10.0+cpu --extra-index-url https://download.pytorch.org/whl/cpu
+torch==2.9.1+cpu --extra-index-url https://download.pytorch.org/whl/cpu
 # --- Web Framework ---
 fastapi
 uvicorn[standard]
