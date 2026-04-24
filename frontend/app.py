@@ -489,9 +489,7 @@ with st.sidebar:
         openai_ok = health.get("groq_configured", False)
         if openai_ok:
             st.markdown('<span class="status-chip chip-online">✓ Groq AI Ready</span>', unsafe_allow_html=True)
-        else:
-            st.markdown('<span class="status-chip chip-warn">⚠ Groq Key Not Set</span>', unsafe_allow_html=True)
-            st.caption("Add GROQ_API_KEY to .env")
+       
 
         vec_count = health.get("vector_store_docs", 0)
         st.markdown(f'<span class="status-chip chip-online">📦 {vec_count:,} vectors</span>', unsafe_allow_html=True)
@@ -939,10 +937,7 @@ elif page == "quiz":
                 st.session_state["quiz_answers"] = {}
                 st.session_state["quiz_submitted"] = False
                 st.session_state["quiz_doc_id"] = doc_id
-            else:
-                st.error(f"**Error:** {result['error']}")
-                st.info("Make sure your GROQ_API_KEY is set in `.env`")
-
+            
         # ── Render Quiz
         if st.session_state.get("quiz_data") and st.session_state.get("quiz_doc_id") == doc_id:
             data = st.session_state["quiz_data"]
