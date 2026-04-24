@@ -1,5 +1,5 @@
 # ============================================================
-# rag/retriever.py — Retrieval with keyword boost
+# rag/retriever.py - Retrieval with keyword boost
 # ============================================================
 
 import re
@@ -14,7 +14,7 @@ from rag.vector_store import get_vector_store
 class Retriever:
     """
     Handles retrieval of relevant chunks from the vector store.
-    Uses Groq API for embeddings — no local model needed.
+    Uses Groq API for embeddings - no local model needed.
     """
 
     def __init__(self, top_k: int = 5):

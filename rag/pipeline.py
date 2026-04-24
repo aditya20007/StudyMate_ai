@@ -1,5 +1,5 @@
 # ============================================================
-# rag/pipeline.py — Full RAG Pipeline Orchestrator
+# rag/pipeline.py - Full RAG Pipeline Orchestrator
 # ============================================================
 
 import time
@@ -18,9 +18,9 @@ class RAGPipeline:
     Retrieval-Augmented Generation Pipeline.
     
     Orchestrates:
-    1. Indexing: Text → Chunks → Embeddings → FAISS
-    2. Retrieval: Query → Embedding → Top-K Chunks
-    3. Generation: Chunks + Query → LLM → Answer
+    1. Indexing: Text -> Chunks -> Embeddings -> FAISS
+    2. Retrieval: Query -> Embedding -> Top-K Chunks
+    3. Generation: Chunks + Query -> LLM -> Answer
     """
 
     def __init__(self):
@@ -31,9 +31,9 @@ class RAGPipeline:
         self.vector_store = get_vector_store()
         self.llm = LLMService()
 
-    # ──────────────────────────────────────────────
+    # ----------------------------------------------
     # Indexing
-    # ──────────────────────────────────────────────
+    # ----------------------------------------------
 
     def index_document(
         self,
@@ -73,9 +73,9 @@ class RAGPipeline:
         logger.info(f"Indexed {len(chunks)} chunks for '{title}'")
         return len(chunks)
 
-    # ──────────────────────────────────────────────
+    # ----------------------------------------------
     # Retrieval
-    # ──────────────────────────────────────────────
+    # ----------------------------------------------
 
     def retrieve(
         self,
@@ -100,9 +100,9 @@ class RAGPipeline:
         logger.debug(f"Retrieved {len(results)} chunks for query: '{query[:80]}...'")
         return results
 
-    # ──────────────────────────────────────────────
+    # ----------------------------------------------
     # Q&A
-    # ──────────────────────────────────────────────
+    # ----------------------------------------------
 
     def answer(
         self,
@@ -111,7 +111,7 @@ class RAGPipeline:
         top_k: int = None,
     ) -> dict:
         """
-        Full RAG Q&A: retrieve context → generate answer.
+        Full RAG Q&A: retrieve context -> generate answer.
 
         Returns:
             dict with 'answer', 'sources', 'latency_ms'
@@ -157,9 +157,9 @@ class RAGPipeline:
             "latency_ms": latency_ms,
         }
 
-    # ──────────────────────────────────────────────
+    # ----------------------------------------------
     # Summarization
-    # ──────────────────────────────────────────────
+    # ----------------------------------------------
 
     def summarize_document(
         self,
@@ -175,9 +175,9 @@ class RAGPipeline:
         logger.info(f"Summarizing doc_id={doc_id}, style={style}")
         return self.llm.summarize(full_text, style=style, title=title)
 
-    # ──────────────────────────────────────────────
+    # ----------------------------------------------
     # Quiz
-    # ──────────────────────────────────────────────
+    # ----------------------------------------------
 
     def generate_quiz(
         self,
@@ -190,9 +190,9 @@ class RAGPipeline:
         logger.info(f"Generating {num_questions} quiz questions for doc_id={doc_id}")
         return self.llm.generate_quiz(full_text, num_questions, difficulty)
 
-    # ──────────────────────────────────────────────
+    # ----------------------------------------------
     # Study Plan (My Addition)
-    # ──────────────────────────────────────────────
+    # ----------------------------------------------
 
     def generate_study_plan(self, doc_id: int, title: str, full_text: str) -> str:
         """Generate a personalized study plan for a document."""
