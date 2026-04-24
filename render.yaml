@@ -14,3 +14,8 @@ services:
         value: production
       - key: DEBUG
         value: "False"
+<<<<<<< HEAD
+=======
+      - key: PYTHON_VERSION
+        value: "3.11.0"
+>>>>>>> b74d19266ae8afdd80eefc86391e650c5791343f
